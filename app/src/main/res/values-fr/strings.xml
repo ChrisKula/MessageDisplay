@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Message Display</string>
+    <string name="empty_message">Message vide !</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="send_with">Envoyer avec</string>
+    <string name="title_activity_settings">Paramètres</string>
+    <string name="title_need_permissions">Permissions requises</string>
+    <string name="message_need_permissions">Afin de pouvoir partager l\'image, vous devez accorder la permission d\'accèder au stockage de l\'appareil. Ne vous inquiètez pas, cette permission est utilisée uniquement pour partager et sauvegarder des images sur le disque.</string>
+    <string name="title_activity_display_message">Affichage du message</string>
+    <string name="all_caps">Tout en maj ?</string>
+    <string name="dummy_content">Contenu factice</string>
+    <string name="share">Partager</string>
+    <string name="text_size">Taille du texte</string>
+    <string name="type_your_message_here">Tapez votre message ici</string>
+    <string name="summ_save_after_sharing">Détermine si l\'image va être sauvegardée ou non une fois partagée</string>
+    <string name="save_after_sharing">Sauvegarder après partage ?</string>
+</resources>
