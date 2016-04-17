@@ -8,18 +8,22 @@ public class ColorUtils {
 
     private static final double FACTOR = 0.7;
 
-    public static String getBrighterHex(String color) {
-        if (!StringUtils.isEmpty(color) && color.charAt(0) == '#') {
-            color = color.substring(1);
+    public static String getBrighterHex(String hexcolor) {
+        if (!StringUtils.isEmpty(hexcolor) && hexcolor.charAt(0) == '#') {
+            hexcolor = hexcolor.substring(1);
         }
 
-        int r = Integer.parseInt(color.substring(0, 2), 16);
-        int g = Integer.parseInt(color.substring(2, 4), 16);
-        int b = Integer.parseInt(color.substring(4, 6), 16);
+        int r = Integer.parseInt(hexcolor.substring(0, 2), 16);
+        int g = Integer.parseInt(hexcolor.substring(2, 4), 16);
+        int b = Integer.parseInt(hexcolor.substring(4, 6), 16);
 
         int i = (int) (1.0 / (1.0 - FACTOR));
         if (r == 0 && g == 0 && b == 0) {
             String s_i = Integer.toHexString(i);
+            if (s_i.length() == 1) {
+                s_i = s_i + s_i;
+            }
+
             return "#" + s_i + s_i + s_i;
         }
         if (r > 0 && r < i) r = i;
@@ -44,14 +48,14 @@ public class ColorUtils {
         return "#" + s_r + s_g + s_b;
     }
 
-    public static String getDarkerHex(String color) {
-        if (!StringUtils.isEmpty(color) && color.charAt(0) == '#') {
-            color = color.substring(1);
+    public static String getDarkerHex(String hexcolor) {
+        if (!StringUtils.isEmpty(hexcolor) && hexcolor.charAt(0) == '#') {
+            hexcolor = hexcolor.substring(1);
         }
 
-        int r = Integer.parseInt(color.substring(0, 2), 16);
-        int g = Integer.parseInt(color.substring(2, 4), 16);
-        int b = Integer.parseInt(color.substring(4, 6), 16);
+        int r = Integer.parseInt(hexcolor.substring(0, 2), 16);
+        int g = Integer.parseInt(hexcolor.substring(2, 4), 16);
+        int b = Integer.parseInt(hexcolor.substring(4, 6), 16);
 
 
         String s_r = "" + Integer.toHexString(Math.max((int) (r * FACTOR), 0));
@@ -69,5 +73,19 @@ public class ColorUtils {
         }
 
         return "#" + s_r + s_g + s_b;
+    }
+
+    public static boolean hasEnoughContrastComparedToWhite(String hexcolor) {
+        if (!StringUtils.isEmpty(hexcolor) && hexcolor.charAt(0) == '#') {
+            hexcolor = hexcolor.substring(1);
+        }
+
+        int r = Integer.parseInt(hexcolor.substring(0, 2), 16);
+        int g = Integer.parseInt(hexcolor.substring(2, 4), 16);
+        int b = Integer.parseInt(hexcolor.substring(4, 6), 16);
+
+        double h = 1 - (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+        return h > 0.5;
     }
 }

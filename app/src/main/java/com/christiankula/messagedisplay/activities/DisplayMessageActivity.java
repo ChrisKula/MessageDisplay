@@ -62,6 +62,8 @@ public class DisplayMessageActivity extends AppCompatActivity {
     public static final String MESSAGE_EXTRA = "MESSAGE";
     public static final String TEXT_SIZE_EXTRA = "TEXT_SIZE";
     public static final String ALL_CAPS_EXTRA = "ALL_CAPS";
+    public static final String TEXT_COLOR_EXTRA = "TEXT_COLOR";
+
     private static final int CODE_RESULT_SHARE = 151;
 
 
@@ -137,7 +139,7 @@ public class DisplayMessageActivity extends AppCompatActivity {
             // Delayed display of UI elements
             ActionBar actionBar = getSupportActionBar();
             if (actionBar != null) {
-                // actionBar.show();
+                //actionBar.show();
             }
         }
     };
@@ -162,6 +164,7 @@ public class DisplayMessageActivity extends AppCompatActivity {
             return false;
         }
     };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -198,31 +201,37 @@ public class DisplayMessageActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         String color = intent.getStringExtra(COLOR_EXTRA);
+        String darkerColor = ColorUtils.getDarkerHex(color);
+
+        if (darkerColor.equalsIgnoreCase("#000000")) {
+            darkerColor = ColorUtils.getBrighterHex(darkerColor);
+        }
+
+
         currentMessage = intent.getStringExtra(MESSAGE_EXTRA);
 
         if (StringUtils.isEmpty(currentMessage)) {
             currentMessage = getResources().getString(R.string.empty_message);
         }
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
 
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.setStatusBarColor(Color.parseColor(ColorUtils.getDarkerHex(color)));
+            window.setStatusBarColor(Color.parseColor(darkerColor));
         }
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.share_button);
-        fab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(ColorUtils.getDarkerHex(color))));
+        fab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(darkerColor)));
 
 
         findViewById(R.id.display_message_root).setBackgroundColor(Color.parseColor(color));
         TextView tv = ((TextView) findViewById(R.id.fullscreen_content));
-
         tv.setText(currentMessage);
         tv.setTextSize(intent.getIntExtra(TEXT_SIZE_EXTRA, 0));
         tv.setAllCaps(intent.getBooleanExtra(ALL_CAPS_EXTRA, true));
+        tv.setTextColor(Color.parseColor(intent.getStringExtra(TEXT_COLOR_EXTRA)));
     }
 
     @Override
@@ -407,12 +416,7 @@ public class DisplayMessageActivity extends AppCompatActivity {
         View rootView = findViewById(R.id.display_message_root).getRootView();
         rootView.setDrawingCacheEnabled(true);
         rootView.destroyDrawingCache();
-        Bitmap bitmap = rootView.getDrawingCache();
-        createImage(bitmap);
-    }
-
-    public void screenShot(View view) {
-        Bitmap bitmap = getRootViewBitmap(view);
+        Bitmap bitmap = rootView.getDrawingCache(true);
         createImage(bitmap);
     }
 

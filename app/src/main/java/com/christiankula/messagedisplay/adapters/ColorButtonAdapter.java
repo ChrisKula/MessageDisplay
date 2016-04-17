@@ -10,24 +10,25 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 import com.christiankula.messagedisplay.R;
+import com.christiankula.messagedisplay.models.ColorModel;
 
 import java.util.List;
 
-public class ColourButtonAdapter extends ArrayAdapter<String> {
+public class ColorButtonAdapter extends ArrayAdapter<ColorModel> {
 
     private Context context;
     private int resource;
-    private List<String> data;
+    private List<ColorModel> data;
 
 
-    public ColourButtonAdapter(Context context, List<String> data) {
+    public ColorButtonAdapter(Context context, List<ColorModel> data) {
         super(context, R.layout.list_item_colour_button, data);
         this.context = context;
         this.data = data;
         this.resource = R.layout.list_item_colour_button;
     }
 
-    public String getItem(int index) {
+    public ColorModel getItem(int index) {
         return data.get(index);
     }
 
@@ -39,17 +40,16 @@ public class ColourButtonAdapter extends ArrayAdapter<String> {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = inflater.inflate(resource, null);
         }
-        String color = data.get(position);
-        color = color.substring(2);
-        color = "#" + color;
-        final String f_color = color;
+        ColorModel colorModel = data.get(position);
+
+        String color = colorModel.getHexColor();
 
         if (color != null) {
             Button b = ((Button) v.findViewById(R.id.colour_button));
-            b.setText(color);
+            b.setText(colorModel.getName());
+
             b.getBackground().setColorFilter(Color.parseColor(color), PorterDuff.Mode.MULTIPLY);
         }
         return v;
     }
-
 }
